@@ -9,9 +9,6 @@ target/
 dbt_packages/
 logs/
 
-# Metabase
-metabase/metabase.db*
-
 # Credentials
 *.env
 
@@ -21,6 +18,12 @@ metabase/metabase.db*
 # IDEs
 .vscode/
 
-# Data
+# Data files
 *.csv
-*.xlsxmetabase/
+*.xlsx
+
+# Metabase
+metabase/
+
+# Generated data
+data/

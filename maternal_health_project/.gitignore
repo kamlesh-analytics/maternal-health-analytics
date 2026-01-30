@@ -1,26 +1,3 @@
-# Python
-venv/
-env/
-*.pyc
-__pycache__/
-
-# dbt
 target/
 dbt_packages/
 logs/
-
-# Metabase
-metabase/metabase.db*
-
-# Credentials
-*.env
-
-# OS
-.DS_Store
-
-# IDEs
-.vscode/
-
-# Data
-*.csv
-*.xlsx
