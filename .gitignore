@@ -23,4 +23,4 @@ metabase/metabase.db*
 
 # Data
 *.csv
-*.xlsx
+*.xlsxmetabase/
