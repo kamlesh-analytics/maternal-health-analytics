@@ -2,7 +2,7 @@
 
 **Purpose:** Intensive SQL training for Resilience Care Junior Analytics Engineer technical test  
 **Candidate:** Kamlesh Seeruttun  
-**Test date:** February 26, 2026  
+**Test date:** February 19, 2026  
 **Interview round:** Technical & business test (1 h 15 - Round 2 of 4)  
 **Interviewer:** Jean-Baptiste Pajot (Data Analytics Lead)  
 
@@ -10,7 +10,7 @@
 
 ## Preparation overview
 
-**Total duration:** 18 days (February 9-26, 2026)  
+**Total duration:** 11 days (February 8-18, 2026)  
 **Daily commitment:** 2-4 hours  
 **Dataset:** Maternal Health Analytics (186K records, 5 tables, PostgreSQL)  
 **Tech stack:** PostgreSQL 14, dbt, Metabase (Resilience Care stack)  
@@ -19,38 +19,34 @@
 
 ## Complete training schedule
 
-### **Phase 1: SQL Fundamentals (Days 1-7) - Feb 8-14**
+### Phase 1: SQL Fundamentals (Days 1-6) - February 8-14
 
 | Day | Date | Topic | Duration | Status |
 |-----|------|-------|----------|--------|
-| **Day 1** | Feb 8-9 | SQL Fundamentals + JOINs proficiency | 4-5 hours | 🔄 In Progress |
-| **Day 2** | Feb 10 | Advanced aggregations + GROUP BY | 3-4 hours | ⏳ Planned |
-| **Day 3** | Feb 11 | CASE statements + subqueries | 3-4 hours | ⏳ Planned |
-| **Day 4** | Feb 12 | CTEs (Common table expressions) | 3-4 hours | ⏳ Planned |
-| **Day 5** | Feb 13 | Window functions | 3-4 hours | ⏳ Planned |
-| **Day 6** | Feb 14 | Data quality checks | 2-3 hours | ⏳ Planned |
+| **Day 1** | Feb 8-9 | SQL fundamentals + JOINs proficiency | 4 hours | ✅ Complete |
+| **Day 2** | Feb 10 | Advanced aggregations + GROUP BY | 3-4 hours | 🔄 In Progress |
+| **Day 3** | Feb 11 | CASE statements + Subqueries | 3-4 hours | ⏳ Planned |
+| **Day 4** | Feb 12 | CTEs (Common Table Expressions) | 3-4 hours | ⏳ Planned |
+| **Day 5** | Feb 13 | Window functions | 4 hours | ⏳ Planned |
+| **Day 6** | Feb 14 | Data quality checks | 3 hours | ⏳ Planned |
 
-### **Phase 2: Consolidation & speed (Days 8-13) - Feb 15-20**
+### Phase 2: Consolidation (Days 7-9) - February 15-17
 
 | Day | Date | Activity | Duration | Status |
 |-----|------|----------|----------|--------|
 | **Day 7** | Feb 15 | Review weak areas + speed drills | 3 hours | ⏳ Planned |
 | **Day 8** | Feb 16 | Business analysis scenarios | 3 hours | ⏳ Planned |
-| **Day 9** | Feb 17 | Mock test #1 (full 75 mins) | 2 hours | ⏳ Planned |
-| **Day 10** | Feb 18 | Mock test #1 review + fixes | 2 hours | ⏳ Planned |
-| **Day 11** | Feb 19 | Advanced patterns practice | 3 hours | ⏳ Planned |
-| **Day 12** | Feb 20 | Mock test #2 (full 75 mins) | 2 hours | ⏳ Planned |
+| **Day 9** | Feb 17 | Mock test #1 (full 75 mins) | 2.5 hours | ⏳ Planned |
 
-### **Phase 3: Peak performance (Days 14-19) - Feb 21-26**
+### Phase 3: Final Prep (Day 10) - February 18
 
 | Day | Date | Activity | Duration | Status |
 |-----|------|----------|----------|--------|
-| **Day 13** | Feb 21 | Mock test #2 review | 2 hours | ⏳ Planned |
-| **Day 14** | Feb 22 | Healthcare analytics patterns | 2 hours | ⏳ Planned |
-| **Day 15** | Feb 23 | Mock test #3 | 2 hours | ⏳ Planned |
-| **Day 16** | Feb 24 | Light review + rest | 1 hour | ⏳ Planned |
-| **Day 17** | Feb 25 AM | Final mental prep + review notes | 30 mins | ⏳ Planned |
-| **Day 18** | **Feb 26 AM** | **🔥 TECHNICAL TEST 🔥** | **75 mins** | **GOAL** |
+| **Day 10** | Feb 18 | Light review + rest | 1 hour | ⏳ Planned |
+
+### TEST DAY - February 19
+
+**Wednesday, February 19, 2026 @ 10:00 AM** 🔥
 
 ---
 
@@ -70,10 +66,7 @@
 - LEFT JOIN (keep all from left table)
 - Multiple JOINs (3-4 table chains)
 - JOIN + aggregation patterns
-- NULL handling (IS NULL, IS NOT NULL)
-- DISTINCT, IN, BETWEEN operators
-- Healthcare analytics patterns (rate calculations)
-- **Target queries:** 20+
+- **Queries completed:** 9
 
 **Key skills gained:**
 - Basic SELECT syntax
@@ -200,7 +193,7 @@
 - Working with healthcare data that saves lives
 - Learning skills that compound over time
 
-**The 18 days of focused practice will:**
+**The 11 days of focused practice will:**
 - Transform intermediate SQL → confident analytics engineer SQL
 - Build muscle memory for common patterns
 - Develop business translation skills
@@ -210,7 +203,7 @@
 
 ---
 
-**Last updated:** February 9, 2026  
+**Last updated:** February 10, 2026  
 **Current status:** Day 1 Session 2 complete (JOINs proficiency) ✅  
 **Upcoming session:** Day 2 (Advanced aggregations + GROUP BY) - February 10, 2026
 
