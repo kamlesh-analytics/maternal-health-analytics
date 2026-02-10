@@ -339,25 +339,45 @@ LEFT JOIN raw.pregnancies AS preg
 -- Question 9
 -- Show me patient demographics with their delivery details
 
+-- Deconstruction:
+--   - Need: patient details (from patients table)
+--   - Need: pregnancy details (from pregnancies table)
+--   - Need: delivery details (from deliveries table)
+--   - Connection 1: patient_id links patients table to pregnancies table
+--   - Connection 2: pregnancy_id links pregnancies table to deliveries table
+--   - Join type 1: INNER (only patients with deliveries will be listed)
+--   - Join type 2: INNER (only patients who completed pregnancies with delivery records will be listed)
 
-
-
-
-
+SELECT
+    -- Patient demographics
+    pat.patient_id,
+    pat.first_name,
+    pat.last_name,
+    pat.birth_date,
+    EXTRACT(YEAR FROM AGE(del.delivery_date, pat.birth_date)) AS age_at_delivery,
+    pat.region,
+    -- Delivery details
+    del.delivery_id,
+    del.delivery_mode,
+    del.delivery_date,
+    del.delivery_method,
+    del.facility_type,
+    del.labor_duration_minutes
+FROM raw.patients AS pat
+INNER JOIN raw.pregnancies AS preg
+    ON pat.patient_id = preg.patient_id
+INNER JOIN raw.deliveries AS del
+    ON preg.pregnancy_id = del.pregnancy_id
+LIMIT 5;
 
 -- =====================================================================================================
-
--- Question 10
--- fdffd
-
+--                   DAY 1 - SESSION 2 COMPLETE (JOINs PROFICIENCY)
 -- =====================================================================================================
 
--- Question 11
--- fdffd
-
--- =====================================================================================================
-
--- Question 12
--- fdffd
+-- Topics covered:
+--   ✅ INNER JOIN (matching rows only)
+--   ✅ LEFT JOIN (keep all from left table)
+--   ✅ Multiple JOINs (3+ table chains)
+--   ✅ JOIN + aggregation patterns
 
 -- =====================================================================================================
