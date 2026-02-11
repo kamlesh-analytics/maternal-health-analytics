@@ -211,13 +211,15 @@ SELECT
     FROM raw.deliveries) AS national_average,
     -- Difference national average - regional average
     (SELECT
-                        ROUND(100.0 * COUNT(CASE WHEN delivery_mode = 'Cesarean' THEN 1 END) / COUNT(*), 2)
-                    FROM raw.deliveries) - ROUND(
-                                                (100.0 * COUNT(
-                                                            CASE
-                                                                WHEN delivery_mode = 'Cesarean' THEN 1
-                                                            END))/COUNT(del.delivery_id),
-                                                            2) AS comparison_delta,    
+        ROUND(100.0 * COUNT(CASE WHEN delivery_mode = 'Cesarean' THEN 1 END) / COUNT(*), 2)
+    FROM raw.deliveries)
+        -
+        ROUND(
+                (100.0 * COUNT(
+                                CASE
+                                    WHEN delivery_mode = 'Cesarean' THEN 1
+                                END))/COUNT(del.delivery_id),
+        2) AS comparison_delta,    
     -- Comparison with national_average
     CASE 
         WHEN ROUND(
@@ -247,7 +249,7 @@ GROUP BY pat.region
 ORDER BY number_of_deliveries_by_region DESC;
 
 -- =====================================================================================================
--- NOTE : THE FOLLOWING QUESTIONS WILL BE HANDLED WHEN CTEs AND WINDOWS FUNCTION WILL BE SEEN
+-- NOTE : THE FOLLOWING QUESTIONS WILL BE ADDRESSED WHEN CTEs AND WINDOWS FUNCTION HAVE BEEN HANDLED
 
 -- Question 7
 -- What's the epidural usage rate for each combination of facility type and region? Show only combinations with 50+ deliveries (statistical significance)
