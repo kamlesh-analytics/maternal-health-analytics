@@ -80,7 +80,7 @@
 
 ### **Day 2: Advanced aggregations + GROUP BY**
 
-**Session 2 (AGGREGATION + GROUP BY - Feb 10):** ✅ Complete
+**Day 2 (AGGREGATION + GROUP BY - Feb 10):** ✅ Complete
 
 **Topics:**
 - Aggregate functions deep dive (COUNT, SUM, AVG, MIN, MAX)
