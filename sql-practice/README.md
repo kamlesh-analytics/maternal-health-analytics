@@ -24,8 +24,8 @@
 | Day | Date | Topic | Duration | Status |
 |-----|------|-------|----------|--------|
 | **Day 1** | Feb 8-9 | SQL fundamentals + JOINs proficiency | 4 hours | ✅ Complete |
-| **Day 2** | Feb 10 | Advanced aggregations + GROUP BY | 3-4 hours | 🔄 In Progress |
-| **Day 3** | Feb 11 | CASE statements + Subqueries | 3-4 hours | ⏳ Planned |
+| **Day 2** | Feb 10 | Advanced aggregations + GROUP BY | 3-4 hours | ✅ Complete |
+| **Day 3** | Feb 11 | CASE statements + Subqueries | 3-4 hours | 🔄 In progress |
 | **Day 4** | Feb 12 | CTEs (Common Table Expressions) | 3-4 hours | ⏳ Planned |
 | **Day 5** | Feb 13 | Window functions | 4 hours | ⏳ Planned |
 | **Day 6** | Feb 14 | Data quality checks | 3 hours | ⏳ Planned |
@@ -79,6 +79,8 @@
 ---
 
 ### **Day 2: Advanced aggregations + GROUP BY**
+
+**Session 2 (AGGREGATION + GROUP BY - Feb 10):** ✅ Complete
 
 **Topics:**
 - Aggregate functions deep dive (COUNT, SUM, AVG, MIN, MAX)
