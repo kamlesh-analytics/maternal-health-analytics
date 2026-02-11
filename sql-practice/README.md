@@ -95,7 +95,7 @@
 - Facility performance metrics
 - Insurance coverage analysis
 
-**Target queries:** 15+
+- **Queries completed:** 6
 
 ---
 
@@ -203,8 +203,8 @@
 
 ---
 
-**Last updated:** February 10, 2026  
-**Current status:** Day 1 Session 2 complete (JOINs proficiency) ✅  
-**Upcoming session:** Day 2 (Advanced aggregations + GROUP BY) - February 10, 2026
+**Last updated:** February 11, 2026  
+**Current status:** Day 2 complete (Advanced aggregations + GROUP BY) ✅  
+**Upcoming session:** Day 3 (CASE statements + Subqueries) - February 11, 2026
 
 ---
