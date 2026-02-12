@@ -19,18 +19,18 @@
 
 ## Complete training schedule
 
-### Phase 1: SQL Fundamentals (Days 1-6) - February 8-14
+### Phase 1: SQL Fundamentals (Days 1-7) - February 8-14
 
 | Day | Date | Topic | Duration | Status |
 |-----|------|-------|----------|--------|
 | **Day 1** | Feb 8-9 | SQL fundamentals + JOINs proficiency | 4 hours | ✅ Complete |
 | **Day 2** | Feb 10 | Advanced aggregations + GROUP BY | 3-4 hours | ✅ Complete |
-| **Day 3** | Feb 11 | CASE statements + Subqueries | 3-4 hours | 🔄 In progress |
-| **Day 4** | Feb 12 | CTEs (Common Table Expressions) | 3-4 hours | ⏳ Planned |
+| **Day 3** | Feb 11-12 | CASE statements + Subqueries | 3-4 hours | ✅ Complete |
+| **Day 4** | Feb 12 | CTEs (Common Table Expressions) | 3-4 hours | 🔄 In progress |
 | **Day 5** | Feb 13 | Window functions | 4 hours | ⏳ Planned |
 | **Day 6** | Feb 14 | Data quality checks | 3 hours | ⏳ Planned |
 
-### Phase 2: Consolidation (Days 7-9) - February 15-17
+### Phase 2: Consolidation (Days 8-10) - February 15-17
 
 | Day | Date | Activity | Duration | Status |
 |-----|------|----------|----------|--------|
@@ -38,7 +38,7 @@
 | **Day 8** | Feb 16 | Business analysis scenarios | 3 hours | ⏳ Planned |
 | **Day 9** | Feb 17 | Mock test #1 (full 75 mins) | 2.5 hours | ⏳ Planned |
 
-### Phase 3: Final Prep (Day 10) - February 18
+### Phase 3: Final Prep (Day 11) - February 18
 
 | Day | Date | Activity | Duration | Status |
 |-----|------|----------|----------|--------|
@@ -103,6 +103,8 @@
 
 ### **Day 3: CASE statements + subqueries**
 
+**Day 3 (CASE statements + subqueries - Feb 11-12):** ✅ Complete
+
 **Topics:**
 - Advanced CASE WHEN (nested conditions)
 - CASE for calculated fields (risk scoring)
@@ -117,9 +119,9 @@
 - Risk categorization (low/medium/high)
 - Composite risk scores (0-10 scale)
 - Comparing to benchmarks (above/below average)
-- Temporal analysis (gestational age calculations)
+- Temporal analysis
 
-**Target queries:** 15+
+- **Queries completed:** 4
 
 ---
 
@@ -143,7 +145,7 @@
 - Patient cohort analysis
 - Benchmark comparisons with CTEs
 
-**Target queries:** 12+
+**Target queries:** 5+
 
 ---
 
@@ -165,7 +167,7 @@
 - Rolling averages (cesarean rate over time)
 - Month-over-month comparisons
 
-**Target queries:** 12+
+**Target queries:** 6+
 
 ---
 
@@ -205,8 +207,8 @@
 
 ---
 
-**Last updated:** February 11, 2026  
-**Current status:** Day 2 complete (Advanced aggregations + GROUP BY) ✅  
-**Upcoming session:** Day 3 (CASE statements + Subqueries) - February 11, 2026
+**Last updated:** February 12, 2026  
+**Current status:** Day 3 complete (Advanced CASE statements + subqueries) ✅  
+**Upcoming session:** Day 4 (Common Table Expressions) - February 12, 2026
 
 ---
