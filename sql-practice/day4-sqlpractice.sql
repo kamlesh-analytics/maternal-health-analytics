@@ -25,7 +25,7 @@ maternal_health db=>
 
 -- Question 1 :-- Show all deliveries where labor duration was longer than the overall average.
 -- Include patient info and how much longer than average.
--- Refactor the Day 3 code (Question 2) written with subqueries using a CTE for better efficiency
+-- Refactor the Day 3 code (Question 2), written with subqueries, using a CTE for better efficiency
 
 -- Deconstruction:
 --   - Need: patient info (from patients table)
@@ -40,11 +40,15 @@ maternal_health db=>
 --   - Functions to be used: ROUND(), AVG()
 
 WITH average_labor AS(
+    -- CTE to calculate average labor duration
     SELECT
         AVG(labor_duration_minutes) AS avg_labor
     FROM raw.deliveries
 )
+
 SELECT
+    -- Retrieve the information needed from the CTE to calculate deliveries
+    -- whode duration is greater han the average labor duration
     pat.patient_id,
     pat.first_name,
     pat.last_name,
@@ -76,7 +80,8 @@ LIMIT 10;
 --   - Function to be used: CASE WHEN... THEN
 --   - Technique chosen: CTEs
 
-WITH indiviual_pregnancy_scores AS(
+WITH individual_pregnancy_scores AS(
+    -- CTE to calculate individual risk scores 
     SELECT
         pregnancy_id,
         maternal_age_at_delivery,
@@ -112,11 +117,11 @@ WITH indiviual_pregnancy_scores AS(
         AND pre_pregnancy_bmi IS NOT NULL
 ),
 total_score AS(
-    -- Total risk score (sum of all 4 scores)
+    -- Calculte total risk score (sum of all 4 scores)
     SELECT
         *,
         (age_score + bmi_score + diabetes_score + preeclampsia_score) AS total_risk_score
-    FROM indiviual_pregnancy_scores
+    FROM individual_pregnancy_scores
 ),
 categorized_total_score AS(
     -- Categorize total_risk_score as Low risk, Moderate risk and High risk
@@ -131,7 +136,11 @@ categorized_total_score AS(
     FROM total_score
 )
 
--- Select final output
+-- Select and rearrange final output with most important columns appearing first
+-- Columns are explicitly listed instead of using a simple SELECT * statement to abide by
+-- production-quality best practices and respect dbt standards, prevent cascading failures,
+-- and improve code readability for stakeholders
+
 SELECT
     pregnancy_id,
     risk_category,
@@ -145,7 +154,8 @@ SELECT
     has_gestational_diabetes,
     has_preeclampsia   
 FROM categorized_total_score
-ORDER BY total_risk_score DESC;
+ORDER BY total_risk_score DESC
+LIMIT 10;
 
 -- =====================================================================================================
 
@@ -154,6 +164,101 @@ ORDER BY total_risk_score DESC;
 -- Then categorize regions as 'Above Average', 'Average', or 'Below Average' based on their cesarean rate
 -- compared to the national average.
 
+WITH national_statistics AS(
+    -- CTE to calculate total deliveries, count number of deliveries where delivery mode
+    -- is cesarean and calculate rate of caesarean on a national basis
+    SELECT
+        COUNT(*) AS total_deliveries,
+        SUM(
+            CASE WHEN delivery_mode = 'Cesarean'
+                THEN 1
+                Else 0
+            END
+        ) AS total_cesarean,
+        ROUND(
+            (100 * (SUM(
+                    CASE WHEN delivery_mode = 'Cesarean'
+                        THEN 1
+                        Else 0
+                        END)
+                    )/COUNT(*)), 2
+        ) AS nat_cesarean_rate
+    FROM raw.deliveries
+    WHERE delivery_id IS NOT NULL -- WHERE cause added for sanity check
+),
+
+birth_weights_per_delivery AS (
+    -- Calculate average birth weight per delivery (for two or more babies in a delivery)
+    -- This precaution is taken to account for deliveries with more than 1 baby 
+
+    SELECT
+        delivery_id,
+        (ROUND(AVG(birth_weight_grams/1000.0), 2)) AS avg_birth_weight_kgs
+    FROM raw.birth_outcomes
+    GROUP BY delivery_id
+),
+
+regional_deliveries AS(
+    -- Calculate total deliveries, total cesarean deliveries, average maternal age at delivery
+    -- and average weight in kilogrammes for each region
+
+    SELECT
+        patient.region AS region,
+        COUNT(*) AS reg_total_deliveries,
+        SUM(
+            CASE WHEN delivery_mode = 'Cesarean'
+                THEN 1
+                Else 0
+            END
+        ) AS reg_total_cesarean,
+        (ROUND(AVG(maternal_age_at_delivery), 2)) AS reg_avg_mat_age,
+        (ROUND(AVG(birth_weight.avg_birth_weight_kgs), 2)) AS reg_avg_birth_kgs
+    FROM raw.patients AS patient
+    INNER JOIN raw.pregnancies AS pregnant
+        ON patient.patient_id = pregnant.patient_id
+    INNER JOIN raw.deliveries AS deliver
+        ON pregnant.pregnancy_id = deliver.pregnancy_id
+    INNER JOIN birth_weights_per_delivery as birth_weight
+        ON deliver.delivery_id = birth_weight.delivery_id
+    GROUP BY patient.region
+),
+
+regional_cesarean_rate AS(
+    
+    -- Calculate regional rate and retrieve national cesarean rate calculated in the first CTE
+        *,
+        ROUND((100.0 * reg_del.reg_total_cesarean/reg_del.reg_total_deliveries), 2) AS reg_cesarean_rate,
+        nat_stats.nat_cesarean_rate AS nat_ces_rate
+    FROM regional_deliveries AS reg_del
+    CROSS JOIN national_statistics as nat_stats
+),
+
+categorized_cesarean_rate AS(
+    -- Create a category for each region with appropriate labels depending on regional/national comparison
+    SELECT
+        *,
+        CASE
+            WHEN reg_cesarean_rate > nat_ces_rate
+                THEN 'Above average'
+            WHEN reg_cesarean_rate = nat_ces_rate
+                THEN 'Average'
+            WHEN reg_cesarean_rate < nat_ces_rate
+                THEN 'Below average'
+        END AS cesarean_cat
+    FROM regional_cesarean_rate
+)
+
+-- Final output rearranged in order of relevance
+SELECT
+    region,
+    cesarean_cat,
+    reg_cesarean_rate,
+    nat_cesarean_rate,
+    reg_total_deliveries,    
+    reg_avg_mat_age,
+    reg_avg_birth_kgs
+FROM categorized_cesarean_rate
+ORDER BY reg_cesarean_rate DESC;
 
 -- =====================================================================================================
 
@@ -161,6 +266,34 @@ ORDER BY total_risk_score DESC;
 -- Show patients who had multiple pregnancies. For each patient, show: total pregnancies, average time
 -- between pregnancies (in months), first pregnancy date, last pregnancy date, and categorize as 'Frequent'
 -- (≤18 months between) or 'Spaced' (>18 months between)."
+
+WITH nb_pregnancies_patient AS (
+    -- CTE to calculate number of pregnancies per patient 
+    SELECT
+        pregnancy_id,
+        patient_id,
+        lmp_date,
+        delivery_date,
+        COUNT(pregnancy_id) AS nb_pregnancies
+    FROM raw.pregnancies
+    GROUP BY pregnancy_id, patient_id, lmp_date, delivery_date
+    LIMIT 9;
+
+),
+
+WITH nb_pregnancies_patient AS (
+    SELECT
+        *,
+        pat.patient_id,
+        COUNT(preg.pregnancy_id) AS nb_pregnancies
+    FROM raw.patients AS pat
+    INNER JOIN raw.pregnancies AS preg
+    ON pat.patient_id = preg.patient_id
+    GROUP BY pat.patient_id
+    HAVING COUNT(pregnancy_id) >= 2
+),
+
+
 
 -- =====================================================================================================
 
