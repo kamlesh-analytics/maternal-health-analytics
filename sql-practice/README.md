@@ -145,7 +145,7 @@
 - Patient cohort analysis
 - Benchmark comparisons with CTEs
 
-**Target queries:** 5+
+- **Queries completed:** 5
 
 ---
 
@@ -167,7 +167,7 @@
 - Rolling averages (cesarean rate over time)
 - Month-over-month comparisons
 
-**Target queries:** 6+
+**Target queries:** 5
 
 ---
 
@@ -187,7 +187,7 @@
 - Check primary/foreign key integrity
 - Identify missing critical fields
 
-**Target queries:** 10+
+**Target queries:** 5
 
 ## Motivation
 
@@ -207,8 +207,8 @@
 
 ---
 
-**Last updated:** February 14, 2026  
-**Current status:** Day 3 complete (Advanced CASE statements + subqueries) ✅  
-**Upcoming session:** Day 4 (Common Table Expressions) - February 12, 13 and 14, 2026
+**Last updated:** February 16, 2026  
+**Current status:** Day 4 complete (Common Table Expressions) ✅
+**Upcoming session:** Day 5 (Window functions) - February 16, 2026
 
 ---
