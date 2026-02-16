@@ -1,5 +1,5 @@
 -- =====================================================================================================
--- DAY 3 : 
+-- DAY 3 : CASE STATEMENTS, SUBQUERIES, DATE FUNCTIONS
 -- Maternal Health Analytics - Technical interview preparation
 -- Date: February 11 and February 12, 2026
 -- =====================================================================================================
