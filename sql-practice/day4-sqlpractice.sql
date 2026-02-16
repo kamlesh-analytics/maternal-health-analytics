@@ -364,30 +364,36 @@ WITH source_layer AS(
 ),
 
 -- Verify and filter raw data to ensure data integrity
+-- INNER JOIN raw.pregnancies to raw.patients to retrieve patient demographics
 staging_layer AS(
     SELECT
-        pregnancy_id,
-        patient_id,
-        pregnancy_number,
-        lmp_date AS first_preg_date,
-        edd AS estimated_delivery_date,
-        delivery_date,
-        maternal_age_at_delivery,
-        pre_pregnancy_bmi,
-        gestational_weeks,
-        initial_risk_score,
-        has_gestational_diabetes,
-        has_preeclampsia,
-        has_placental_issues,
-        is_multiple_gestation,
-        smoking_3rd_trimester,
-        alcohol_during_pregnancy,
-        cannabis_use,
-        covid_infection
-    FROM source_layer
-    WHERE pregnancy_id IS NOT NULL
-        AND maternal_age_at_delivery IS NOT NULL
-        AND pre_pregnancy_bmi IS NOT NULL
+        preg.pregnancy_id,
+        preg.patient_id,
+        pat.first_name,
+        pat.last_name,
+        pat.region,
+        preg.pregnancy_number,
+        preg.lmp_date AS first_preg_date,
+        preg.edd AS estimated_delivery_date,
+        preg.delivery_date,
+        preg.maternal_age_at_delivery,
+        preg.pre_pregnancy_bmi,
+        preg.gestational_weeks,
+        preg.initial_risk_score,
+        preg.has_gestational_diabetes,
+        preg.has_preeclampsia,
+        preg.has_placental_issues,
+        preg.is_multiple_gestation,
+        preg.smoking_3rd_trimester,
+        preg.alcohol_during_pregnancy,
+        preg.cannabis_use,
+        preg.covid_infection
+    FROM source_layer AS preg
+    INNER JOIN raw.patients AS pat
+        ON pat.patient_id =preg.patient_id 
+    WHERE preg.pregnancy_id IS NOT NULL
+        AND preg.maternal_age_at_delivery IS NOT NULL
+        AND preg.pre_pregnancy_bmi IS NOT NULL
 ),
 
 -- Transform numeric and boolean columns in individual risk score to compute total risk score
@@ -396,9 +402,11 @@ intermediate_risk_score AS(
     SELECT
         pregnancy_id,
         patient_id,
+        first_name,
+        last_name,
+        region,
         maternal_age_at_delivery,
         pre_pregnancy_bmi,
-        initial_risk_score,
         -- Calculate age_score (0-3 points) from maternal_age_at_delivery
         CASE
             WHEN maternal_age_at_delivery < 20 THEN 1
@@ -450,6 +458,9 @@ categorize_risk_score AS(
 SELECT
     patient_id,
     pregnancy_id,
+    first_name,
+    last_name,
+    region,
     risk_category,
     total_risk_score,
     age_score,
@@ -463,57 +474,14 @@ ORDER BY total_risk_score DESC;
 
 -- =====================================================================================================
 
--- Question 6
--- Rank facilities into quality tiers (Gold/Silver/Bronze) based on composite score: 30% cesarean rate
--- (lower is better), 40% preterm rate (lower is better), 30% average birth weight (2500-4000g is optimal).
--- Show top 10 facilities.
-
 -- =====================================================================================================
-
--- Question 7
-
--- Compare pregnancy outcomes across 4 quarters of 2024. For each quarter, calculate: total
--- pregnancies, cesarean rate, preterm rate, average maternal age. Then calculate quarter-over-quarter
--- change for each metric.
-
--- =====================================================================================================
-
--- Question 8
-
--- Segment patients into 4 groups based on 2 dimensions: (1) Age: Young (<30) vs Mature (≥30),
--- (2) Risk: Low-risk (no diabetes, no preeclampsia) vs High-risk (has diabetes OR preeclampsia).
--- Show segment size and average birth weight for each segment.
-
--- =====================================================================================================
-
--- Question 9
-
--- Divide facilities into 3 equal groups (terciles) based on delivery volume:
--- High-volume (top 33%), Medium-volume (middle 33%), Low-volume (bottom 33%).
--- Compare cesarean rates across volume terciles.
-
--- =====================================================================================================
-
--- Question 10
-
--- Build a risk funnel showing how many pregnancies remain after each risk filter:
--- (1) Start with all pregnancies,
--- (2) Filter to age ≥35,
--- (3) Then filter to BMI ≥30,
--- (4) Then filter to has diabetes OR preeclampsia.
--- Show counts at each stage.
-
--- =====================================================================================================
-
-
--- =====================================================================================================
---                   DAY 4 - COMPLETE ()
+--                   DAY 4 - COMPLETE (COMMON TABLE EXPRESSIONS)
 -- =====================================================================================================
 
 -- Topics covered:
---   ✅ 
---   ✅ 
---   ✅ 
---   ✅ 
-
--- =====================================================================================================
+-- ✅ CTE basics
+-- ✅ Multi-stage CTEs
+-- ✅ dbt layering (source → staging → intermediate → marts)
+-- ✅ Data quality awareness-- 
+ 
+-- =====================================================================================================-- 
