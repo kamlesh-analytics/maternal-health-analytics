@@ -1,7 +1,7 @@
 -- =====================================================================================================
 -- DAY 4 : COMMON TABLE EXPRESSIONS
 -- Maternal Health Analytics - Technical interview preparation
--- Date: February 12, 2026
+-- Date: February 15, 2026
 -- =====================================================================================================
 
 
@@ -482,6 +482,6 @@ ORDER BY total_risk_score DESC;
 -- ✅ CTE basics
 -- ✅ Multi-stage CTEs
 -- ✅ dbt layering (source → staging → intermediate → marts)
--- ✅ Data quality awareness-- 
+-- ✅ Data quality awareness
  
 -- =====================================================================================================-- 
