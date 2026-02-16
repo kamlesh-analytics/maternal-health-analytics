@@ -249,25 +249,6 @@ GROUP BY pat.region
 ORDER BY number_of_deliveries_by_region DESC;
 
 -- =====================================================================================================
--- NOTE : THE FOLLOWING QUESTIONS WILL BE ADDRESSED WHEN CTEs AND WINDOWS FUNCTION HAVE BEEN HANDLED
-
--- Question 7
--- What's the epidural usage rate for each combination of facility type and region? Show only combinations with 50+ deliveries (statistical significance)
-
--- =====================================================================================================
-
--- Question 8
--- For each region, calculate:
--- (1) Total deliveries
--- (2) Cesarean rate
--- (3) Preterm birth rate
--- (4) Average birth weight
--- (5) Epidural usage rate
--- Average maternal age
--- Rank regions by overall quality score
-
--- =====================================================================================================
-
 
 -- =====================================================================================================
 --                   DAY 2 - COMPLETE (AGGREGATIONS + GROUP BY)
