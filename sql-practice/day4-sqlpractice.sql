@@ -267,81 +267,241 @@ ORDER BY reg_cesarean_rate DESC;
 -- between pregnancies (in months), first pregnancy date, last pregnancy date, and categorize as 'Frequent'
 -- (≤18 months between) or 'Spaced' (>18 months between)."
 
-WITH nb_pregnancies_patient AS (
-    -- CTE to calculate number of pregnancies per patient 
+WITH total_pregnancies_patient AS(
+    -- CTE to calculate number of pregnancies per patient
     SELECT
-        pregnancy_id,
         patient_id,
-        lmp_date,
-        delivery_date,
-        COUNT(pregnancy_id) AS nb_pregnancies
+        COUNT(pregnancy_id) AS nb_preg_patient,
+        MIN(lmp_date) AS first_preg_date,
+        MAX(lmp_date) AS last_preg_date
     FROM raw.pregnancies
-    GROUP BY pregnancy_id, patient_id, lmp_date, delivery_date
-    LIMIT 9;
-
-),
-
-WITH nb_pregnancies_patient AS (
-    SELECT
-        *,
-        pat.patient_id,
-        COUNT(preg.pregnancy_id) AS nb_pregnancies
-    FROM raw.patients AS pat
-    INNER JOIN raw.pregnancies AS preg
-    ON pat.patient_id = preg.patient_id
-    GROUP BY pat.patient_id
+    GROUP BY patient_id
     HAVING COUNT(pregnancy_id) >= 2
 ),
 
+number_months_pregnancies AS(
+    -- Calculate number of months between pregnancies in months and number of pregnancy period(s)
+    SELECT
+        total_preg.patient_id,
+        pat.first_name,
+        pat.last_name,
+        total_preg.first_preg_date,
+        total_preg.last_preg_date,
+        total_preg.nb_preg_patient AS tot_num_preg,
+        EXTRACT(YEAR FROM AGE (last_preg_date, first_preg_date))*12 + EXTRACT(MONTH FROM AGE (last_preg_date, first_preg_date)) AS diff_preg_date_months,
+        (total_preg.nb_preg_patient - 1) AS preg_period
+    FROM total_pregnancies_patient AS total_preg
+    INNER JOIN raw.patients AS pat
+    ON total_preg.patient_id = pat.patient_id
+),
 
+average_month_preg AS(
+        -- Calculate average number of months between pregnancies
+    SELECT
+        num_month_preg.patient_id,
+        num_month_preg.first_name,
+        num_month_preg.last_name,
+        num_month_preg.tot_num_preg AS total_num_preg,
+        num_month_preg.first_preg_date,
+        num_month_preg.last_preg_date,
+        num_month_preg.diff_preg_date_months,
+        ROUND((num_month_preg.diff_preg_date_months * 1.0)/(num_month_preg.preg_period), 2) AS avg_month_bet_preg
+FROM number_months_pregnancies AS num_month_preg
+),
+
+categorize_pregnancies AS(
+    SELECT
+        *,
+        CASE
+            -- When controlling the output, it has been noticed that some patients have pregnancies between 0 and 27 days apart.
+            -- Therefore, the average number of months between pregnancies is returned as zero by the query.
+            -- Medical literature states that pregnancies between 0 and 15 days apart are medically impossible.
+            -- Furthermore, average number of months between pregnancies which are less than 9 months are medically suspicious.
+            -- The averages calculated are mathematically correct but do not show variability: they do not tell the true story.
+            -- These edge cases have therefore been flagged as a data quality issue which would require further investigation
+            WHEN avg_preg.avg_month_bet_preg = 0
+                THEN 'Investigate data ⚠️'
+            WHEN avg_preg.avg_month_bet_preg < 9
+                THEN 'Investigate data ⚠️'
+            WHEN avg_preg.avg_month_bet_preg <= 18
+                THEN 'Frequent'
+            ELSE 'Spaced'
+        END AS pregnancy_category
+    FROM average_month_preg AS avg_preg
+)
+
+-- Final output rearranged in order of relevance
+SELECT
+        cat_preg.patient_id,
+        cat_preg.first_name,
+        cat_preg.last_name,
+        cat_preg.total_num_preg,
+        cat_preg.pregnancy_category,
+        cat_preg.first_preg_date,
+        cat_preg.last_preg_date,
+        cat_preg.diff_preg_date_months,
+        cat_preg.avg_month_bet_preg
+FROM categorize_pregnancies AS cat_preg
+ORDER BY cat_preg.avg_month_bet_preg DESC;
 
 -- =====================================================================================================
 
 -- Question 5
--- Rank facilities into quality tiers (Gold/Silver/Bronze) based on composite score: 30% cesarean rate
--- (lower is better), 40% preterm rate (lower is better), 30% average birth weight (2500-4000g is optimal).
--- Show top 10 facilities.
 
--- =====================================================================================================
-
--- Question 6
--- Compare pregnancy outcomes across 4 quarters of 2024. For each quarter, calculate: total
--- pregnancies, cesarean rate, preterm rate, average maternal age. Then calculate quarter-over-quarter
--- change for each metric.
-
--- =====================================================================================================
-
--- Question 7
--- Segment patients into 4 groups based on 2 dimensions: (1) Age: Young (<30) vs Mature (≥30),
--- (2) Risk: Low-risk (no diabetes, no preeclampsia) vs High-risk (has diabetes OR preeclampsia).
--- Show segment size and average birth weight for each segment.
-
--- =====================================================================================================
-
--- Question 8
--- Divide facilities into 3 equal groups (terciles) based on delivery volume:
--- High-volume (top 33%), Medium-volume (middle 33%), Low-volume (bottom 33%).
--- Compare cesarean rates across volume terciles.
-
--- =====================================================================================================
-
--- Question 9
--- Build a risk funnel showing how many pregnancies remain after each risk filter:
--- (1) Start with all pregnancies,
--- (2) Filter to age ≥35,
--- (3) Then filter to BMI ≥30,
--- (4) Then filter to has diabetes OR preeclampsia.
--- Show counts at each stage.
-
--- =====================================================================================================
-
--- Question 10
 -- Build a complete dbt-style transformation:
 -- (1) Source layer: raw pregnancies,
 -- (2) Staging layer: clean and standardize,
 -- (3) Intermediate layer: calculate risk scores,
 -- (4) Marts layer: business-ready metrics with categories.
 -- Final output: pregnancy_id, patient demographics, risk scores, risk category, ready for dashboard.
+
+
+-- Pull raw data in the source layer from raw.pregnancies table
+WITH source_layer AS(
+    SELECT
+        *
+    FROM raw.pregnancies AS source
+),
+
+-- Verify and filter raw data to ensure data integrity
+staging_layer AS(
+    SELECT
+        pregnancy_id,
+        patient_id,
+        pregnancy_number,
+        lmp_date AS first_preg_date,
+        edd AS estimated_delivery_date,
+        delivery_date,
+        maternal_age_at_delivery,
+        pre_pregnancy_bmi,
+        gestational_weeks,
+        initial_risk_score,
+        has_gestational_diabetes,
+        has_preeclampsia,
+        has_placental_issues,
+        is_multiple_gestation,
+        smoking_3rd_trimester,
+        alcohol_during_pregnancy,
+        cannabis_use,
+        covid_infection
+    FROM source_layer
+    WHERE pregnancy_id IS NOT NULL
+        AND maternal_age_at_delivery IS NOT NULL
+        AND pre_pregnancy_bmi IS NOT NULL
+),
+
+-- Transform numeric and boolean columns in individual risk score to compute total risk score
+-- and drop irrelevant columns
+intermediate_risk_score AS(
+    SELECT
+        pregnancy_id,
+        patient_id,
+        maternal_age_at_delivery,
+        pre_pregnancy_bmi,
+        initial_risk_score,
+        -- Calculate age_score (0-3 points) from maternal_age_at_delivery
+        CASE
+            WHEN maternal_age_at_delivery < 20 THEN 1
+            WHEN maternal_age_at_delivery BETWEEN 35 and 39 THEN 2
+            WHEN maternal_age_at_delivery >= 40 THEN 3
+            ELSE 0
+        END AS age_score,
+        -- Calculate bmi_score (0-3 points) from pre_pregnancy_bmi
+        CASE
+            WHEN pre_pregnancy_bmi < 18.5 THEN 1
+            WHEN pre_pregnancy_bmi BETWEEN 30 and 34.9 THEN 2
+            WHEN pre_pregnancy_bmi >= 35 THEN 3
+        ELSE 0
+        END AS bmi_score,
+        -- Calculate diabetes_score (0-2 points) from has_gestational_diabetes
+        CASE
+            WHEN has_gestational_diabetes = 't' THEN 2
+            ELSE 0
+        END AS diabetes_score,
+        -- Calculate has_preeclampsia_score (0-2 points) from has_has_preeclampsia
+        CASE
+            WHEN has_preeclampsia = 't' THEN 2
+            ELSE 0
+        END AS preeclampsia_score
+    FROM staging_layer
+),
+
+-- Calculate total risk score
+calculate_risk_score AS(
+    SELECT 
+        tot_risk_score.*,
+        (tot_risk_score.age_score + tot_risk_score.bmi_score + tot_risk_score.diabetes_score + tot_risk_score.preeclampsia_score) AS total_risk_score
+    FROM intermediate_risk_score AS tot_risk_score
+),
+
+-- Categorize risk_score
+categorize_risk_score AS(
+    SELECT
+        risk_cat.*,
+        CASE
+            WHEN risk_cat.total_risk_score <= 3 THEN 'Low'
+            WHEN risk_cat.total_risk_score BETWEEN 4 AND 6 THEN 'Moderate'
+            WHEN risk_cat.total_risk_score >= 7 THEN 'High'
+        END AS risk_category
+    FROM calculate_risk_score AS risk_cat
+)
+
+-- Dashboard-ready final select with columns in order of relevance
+SELECT
+    patient_id,
+    pregnancy_id,
+    risk_category,
+    total_risk_score,
+    age_score,
+    bmi_score,
+    diabetes_score,
+    preeclampsia_score,
+    maternal_age_at_delivery,
+    pre_pregnancy_bmi    
+FROM categorize_risk_score
+ORDER BY total_risk_score DESC;
+
+-- =====================================================================================================
+
+-- Question 6
+-- Rank facilities into quality tiers (Gold/Silver/Bronze) based on composite score: 30% cesarean rate
+-- (lower is better), 40% preterm rate (lower is better), 30% average birth weight (2500-4000g is optimal).
+-- Show top 10 facilities.
+
+-- =====================================================================================================
+
+-- Question 7
+
+-- Compare pregnancy outcomes across 4 quarters of 2024. For each quarter, calculate: total
+-- pregnancies, cesarean rate, preterm rate, average maternal age. Then calculate quarter-over-quarter
+-- change for each metric.
+
+-- =====================================================================================================
+
+-- Question 8
+
+-- Segment patients into 4 groups based on 2 dimensions: (1) Age: Young (<30) vs Mature (≥30),
+-- (2) Risk: Low-risk (no diabetes, no preeclampsia) vs High-risk (has diabetes OR preeclampsia).
+-- Show segment size and average birth weight for each segment.
+
+-- =====================================================================================================
+
+-- Question 9
+
+-- Divide facilities into 3 equal groups (terciles) based on delivery volume:
+-- High-volume (top 33%), Medium-volume (middle 33%), Low-volume (bottom 33%).
+-- Compare cesarean rates across volume terciles.
+
+-- =====================================================================================================
+
+-- Question 10
+
+-- Build a risk funnel showing how many pregnancies remain after each risk filter:
+-- (1) Start with all pregnancies,
+-- (2) Filter to age ≥35,
+-- (3) Then filter to BMI ≥30,
+-- (4) Then filter to has diabetes OR preeclampsia.
+-- Show counts at each stage.
 
 -- =====================================================================================================
 
