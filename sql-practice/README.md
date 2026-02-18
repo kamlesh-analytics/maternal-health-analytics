@@ -19,34 +19,34 @@
 
 ## Complete training schedule
 
-### Phase 1: SQL Fundamentals (Days 1-6) - February 8-16
+### Phase 1: SQL Fundamentals (Days 1-6) - February 8-9
 
 | Day | Date | Topic | Duration | Status |
 |-----|------|-------|----------|--------|
 | **Day 1** | Feb 8-9 | SQL fundamentals + JOINs proficiency | 4 hours | ✅ Complete |
 | **Day 2** | Feb 10 | Advanced aggregations + GROUP BY | 3-4 hours | ✅ Complete |
 | **Day 3** | Feb 11-12 | CASE statements + Subqueries | 3-4 hours | ✅ Complete |
-| **Day 4** | Feb 12-13-14 | CTEs (Common Table Expressions) | 3-4 hours | 🔄 In progress |
-| **Day 5** | Feb 15 | Window functions | 4 hours | ⏳ Planned |
-| **Day 6** | Feb 16 | Data quality checks | 3 hours | ⏳ Planned |
+| **Day 4** | Feb 12-13-14 | CTEs (Common Table Expressions) | 3-4 hours | ✅ Complete |
+| **Day 5** | Feb 15 | CTEs (dbt layers) | 4 hours | ✅ Complete |
+| **Day 6** | Feb 16 | General practice | 3 hours | ✅ Complete |
 
 ### Phase 2: Consolidation (Days 7-9) - February 16-18
 
 | Day | Date | Activity | Duration | Status |
 |-----|------|----------|----------|--------|
-| **Day 7** | Feb 16 | Review weak areas + speed drills | 3 hours | ⏳ Planned |
-| **Day 8** | Feb 17 | Business analysis scenarios | 3 hours | ⏳ Planned |
-| **Day 9** | Feb 18 | Mock test #1 (full 75 mins) | 2.5 hours | ⏳ Planned |
+| **Day 7** | Feb 16 | Review weak areas | 3 hours | ✅ Complete |
+| **Day 8** | Feb 17 | Business analysis scenarios | 3 hours | ✅ Complete |
+| **Day 9** | Feb 18 | Mock test #1 | 2.5 hours | ✅ Complete |
 
 ### Phase 3: Final Prep (Day 10) - February 18
 
 | Day | Date | Activity | Duration | Status |
 |-----|------|----------|----------|--------|
-| **Day 10** | Feb 18 | Light review + rest | 1 hour | ⏳ Planned |
+| **Day 10** | Feb 18 | Speed drills | 2 hours | 🔄 In progress |
 
 ### TEST DAY - February 19
 
-**Wednesday, February 19, 2026 @ 10:00 AM** 🔥
+**Thursday, February 19, 2026 @ 10:00 AM** 🔥
 
 ---
 
@@ -125,7 +125,10 @@
 
 ---
 
-### **Day 4: CTEs (Common table expressions)**
+### **Day 4: CTEs (Common table expressions & dbt-style transformations)**
+
+**Day 4 (Common table expressions - Feb 12-14):** ✅ Complete
+**Day 5 (dbt-style transformations - Feb 15):** ✅ Complete
 
 **Topics:**
 - Basic CTEs (WITH clause)
@@ -147,47 +150,6 @@
 
 - **Queries completed:** 5
 
----
-
-### **Day 5: Window functions**
-
-**Topics:**
-- ROW_NUMBER(), RANK(), DENSE_RANK()
-- PARTITION BY (grouping within window)
-- ORDER BY (sorting within window)
-- Aggregate window functions (SUM/AVG/COUNT OVER)
-- Running totals and cumulative sums
-- Moving averages (7-day, 30-day rolling)
-- LAG() and LEAD() (previous/next row values)
-- ROWS BETWEEN (frame specification)
-
-**Healthcare examples:**
-- Pregnancy sequence numbering (1st, 2nd, 3rd pregnancy)
-- Monthly delivery trends (cumulative)
-- Rolling averages (cesarean rate over time)
-- Month-over-month comparisons
-
-**Target queries:** 5
-
----
-
-### **Day 6: Data quality checks**
-
-**Topics:**
-- NULL detection and counting
-- Duplicate detection (duplicated() patterns)
-- Referential integrity checks (orphan records)
-- Business logic validation (dates, ranges)
-- Outlier detection (statistical methods)
-- Data profiling queries
-
-**Healthcare examples:**
-- Find visits after delivery date (data quality issue)
-- Detect impossible values (negative birth weight)
-- Check primary/foreign key integrity
-- Identify missing critical fields
-
-**Target queries:** 5
 
 ## Motivation
 
@@ -198,17 +160,17 @@
 - Learning skills that compound over time
 
 **The 11 days of focused practice will:**
-- Transform intermediate SQL → confident analytics engineer SQL
+- Transform beginner SQL → intermediate analytics engineer SQL
 - Build muscle memory for common patterns
 - Develop business translation skills
 - Prove I can learn quickly and systematically
 
-**This is an investment in my future as an analytics engineer.**
+**In short, this is an investment in my future as an analytics engineer.**
 
 ---
 
-**Last updated:** February 16, 2026  
-**Current status:** Day 4 complete (Common Table Expressions) ✅
-**Upcoming session:** Day 5 (Window functions) - February 16, 2026
+**Last updated:** February 18, 2026  
+**Current status:** Day 5 complete (dbt-style transformations) ✅
+**Upcoming session:** Day 10 Speed drills - February 18, 2026
 
 ---
