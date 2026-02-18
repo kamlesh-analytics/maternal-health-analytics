@@ -23,26 +23,25 @@
 
 | Day | Date | Topic | Duration | Status |
 |-----|------|-------|----------|--------|
-| **Day 1** | Feb 8-9 | SQL fundamentals + JOINs proficiency | 4 hours | ✅ Complete |
+| **Days 1-2** | Feb 8-9 | SQL fundamentals + JOINs proficiency | 4 hours | ✅ Complete |
 | **Day 2** | Feb 10 | Advanced aggregations + GROUP BY | 3-4 hours | ✅ Complete |
-| **Day 3** | Feb 11-12 | CASE statements + Subqueries | 3-4 hours | ✅ Complete |
-| **Day 4** | Feb 12-13-14 | CTEs (Common Table Expressions) | 3-4 hours | ✅ Complete |
-| **Day 5** | Feb 15 | CTEs (dbt layers) | 4 hours | ✅ Complete |
-| **Day 6** | Feb 16 | General practice | 3 hours | ✅ Complete |
+| **Days 3-4** | Feb 11-12 | CASE statements + Subqueries | 3-4 hours | ✅ Complete |
+| **Days 4-6** | Feb 12-13-14 | CTEs (Common Table Expressions) | 3-4 hours | ✅ Complete |
+| **Day 7** | Feb 15 | CTEs (dbt layers) | 4 hours | ✅ Complete |
+| **Day 8** | Feb 16 | Review weak areas | 3 hours | ✅ Complete |
 
 ### Phase 2: Consolidation (Days 7-9) - February 16-18
 
 | Day | Date | Activity | Duration | Status |
 |-----|------|----------|----------|--------|
-| **Day 7** | Feb 16 | Review weak areas | 3 hours | ✅ Complete |
-| **Day 8** | Feb 17 | Business analysis scenarios | 3 hours | ✅ Complete |
-| **Day 9** | Feb 18 | Mock test #1 | 2.5 hours | ✅ Complete |
+| **Day 9** | Feb 17 | Business analysis scenarios | 3 hours | ✅ Complete |
+| **Day 10** | Feb 18 | Mock test #1 | 2.5 hours | ✅ Complete |
 
 ### Phase 3: Final Prep (Day 10) - February 18
 
 | Day | Date | Activity | Duration | Status |
 |-----|------|----------|----------|--------|
-| **Day 10** | Feb 18 | Speed drills | 2 hours | 🔄 In progress |
+| **Day 11** | Feb 18 | Speed drills | 2 hours | 🔄 In progress |
 
 ### TEST DAY - February 19
 
@@ -125,10 +124,10 @@
 
 ---
 
-### **Day 4: CTEs (Common table expressions & dbt-style transformations)**
+### **Day 4-7: CTEs (Common table expressions & dbt-style transformations)**
 
-**Day 4 (Common table expressions - Feb 12-14):** ✅ Complete
-**Day 5 (dbt-style transformations - Feb 15):** ✅ Complete
+**Day 4-5 (Common table expressions - Feb 12-14):** ✅ Complete
+**Day 6-7 (dbt-style transformations - Feb 15):** ✅ Complete
 
 **Topics:**
 - Basic CTEs (WITH clause)
