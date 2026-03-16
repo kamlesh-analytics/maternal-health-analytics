@@ -1,10 +1,7 @@
 # SQL practice for technical interview preparation
 
-**Purpose:** Intensive SQL training for Resilience Care Junior Analytics Engineer technical test  
-**Candidate:** Kamlesh Seeruttun  
-**Test date:** February 19, 2026  
-**Interview round:** Technical & business test (1 h 15 - Round 2 of 4)  
-**Interviewer:** Jean-Baptiste Pajot (Data Analytics Lead)  
+**Purpose:** Intensive SQL training for an Analytics Engineer technical test  
+**Candidate:** Kamlesh Seeruttun
 
 ---
 
@@ -153,7 +150,7 @@
 ## Motivation
 
 **This planned practice session is not just about passing a test. It's about:**
-- Joining a mission-driven company (Resilience Care improves patient outcomes)
+- Joining a mission-driven company
 - Building a career in analytics engineering (technical + business + impact)
 - Working with healthcare data that saves lives
 - Learning skills that compound over time
@@ -168,8 +165,6 @@
 
 ---
 
-**Last updated:** February 18, 2026  
-**Current status:** Day 5 complete (dbt-style transformations) ✅
-**Upcoming session:** Day 10 Speed drills - February 18, 2026
+**Last updated:** March 16, 2026
 
 ---
